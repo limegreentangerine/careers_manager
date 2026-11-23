@@ -2,10 +2,18 @@
 
 namespace Concrete\Package\CareersManager;
 
-use Concrete\Core\Package\Package;
+use Core;
+use Route;
+use Concrete\Core\Entity\Package;
+use ClassKit\Package\Traits\PageTrait;
+use ClassKit\Package\PackageController;
+use Concrete\Core\Package\PackageService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
-class Controller extends Package
+class Controller extends PackageController
 {
+    use PageTrait;
+
     /**
      * The packages handle.
      * Note that this must be unique in the
@@ -103,5 +111,68 @@ class Controller extends Package
     public function getPackageDescription()
     {
         return t('Careers Management System');
+    }
+
+    /**
+     * The packages install routine.
+     */
+    public function install()
+    {
+        $pkg = parent::install();
+        if (!$pkg) {
+            $pkg = Core::make(PackageService::class)->getByHandle($this->pkgHandle);
+        }
+        $this->installDatabase();
+        $this->installOrUpgrade($pkg);
+    }
+
+    /**
+     * The packages upgrade routine.
+     */
+    public function upgrade()
+    {
+        $pkg = Core::make(PackageService::class)->getByHandle($this->pkgHandle);
+        parent::upgrade();
+        $this->installOrUpgrade($pkg);
+    }
+
+    public function registerRoutes(): void
+    {
+        Route::get('/ajax/validation/location/handle', function () {
+            $value = $_REQUEST['value'];
+            if ($value !== '') {
+                $em = app()->make(\Doctrine\ORM\EntityManagerInterface::class);
+                $handle = $em->getRepository(\CareersManager\Entity\Location::class)->findOneBy([
+                    'handle' => $value,
+                ]);
+                return new JsonResponse([ 'count' => $handle ? count($handle) : 0 ]);
+            }
+
+            return new JsonResponse([]);
+        });
+
+        Route::get('/ajax/validation/job/slug', function () {
+            $value = $_REQUEST['value'];
+            if ($value !== '') {
+                $em = app()->make(\Doctrine\ORM\EntityManagerInterface::class);
+                $handle = $em->getRepository(\CareersManager\Entity\Job::class)->findOneBy([
+                    'slug' => $value,
+                ]);
+                return new JsonResponse([ 'count' => $handle ? count($handle) : 0 ]);
+            }
+
+            return new JsonResponse([]);
+        });
+    }
+
+    public function registerEvents(): void {}
+
+    public function installOrUpgrade(Package $pkg): void
+    {
+        // Add dashboard pages
+        $this->addSinglePage('/dashboard/careers_manager', $pkg, t('Careers Manager'));
+        $this->addSinglePage('/dashboard/careers_manager/jobs', $pkg, t('Jobs'));
+        $this->addSinglePage('/dashboard/careers_manager/locations', $pkg, t('Locations'));
+        $this->addSinglePage('/dashboard/careers_manager/settings', $pkg, t('Settings'));
     }
 }
