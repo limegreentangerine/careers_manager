@@ -1,6 +1,6 @@
 <?php
 
-namespace Concrete\Package\ComposerPackage;
+namespace Concrete\Package\CareersManager;
 
 use Concrete\Core\Package\Package;
 
@@ -13,14 +13,14 @@ class Controller extends Package
      *
      * @var string
      */
-    protected $pkgHandle = 'composer_package';
+    protected $pkgHandle = 'careers_manager';
 
     /**
      * The packages version.
      *
      * @var string
      */
-    protected $pkgVersion = '0.0.0';
+    protected $pkgVersion = '0.0.0-beta.2';
 
     /**
      * The minimum Concrete version compatible with the package.
@@ -83,7 +83,7 @@ class Controller extends Package
      * @var array
      */
     protected $pkgAutoloaderRegistries = [
-        'src' => '\ComposerPackage',
+        'src' => '\CareersManager',
     ];
 
     /**
@@ -97,11 +97,11 @@ class Controller extends Package
 
     public function getPackageName()
     {
-        return t('composer_name');
+        return t('Careers Manager');
     }
 
     public function getPackageDescription()
     {
-        return t('composer_description');
+        return t('Careers Management System');
     }
 }

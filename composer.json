@@ -1,22 +1,22 @@
 {
-	"name": "limegreentangerine/composer_package",
-	"description": "composer_description",
+	"name": "limegreentangerine/careers_manager",
+	"description": "Careers Management System",
 	"type": "concrete5-package",
 	"license": "proprietary",
 	"minimum-stability": "stable",
 	"autoload": {
 		"psr-4": {
-			"ComposerPackage\\": "src/"
+			"CareersManager\\": "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"ComposerPackage\\Tests\\": "tests/"
+			"CareersManager\\Tests\\": "tests/"
 		}
 	},
 	"authors": [],
 	"require": {
-		"limegreentangerine/class_kit": "^1.0"
+		"limegreentangerine/class_kit": "^1.0 || ^2.0"
 	},
 	"require-dev": {
 		"php": "^8.4",
@@ -49,11 +49,5 @@
 		"post-install-cmd": [
 			"npm install"
 		]
-	},
-	"repositories": [
-		{
-			"type": "composer",
-			"url": "https://packages.limegreentangerine.net"
-		}
-	]
+	}
 }

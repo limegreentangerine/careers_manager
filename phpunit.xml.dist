@@ -7,7 +7,7 @@
     colors="true"
 >
     <testsuites>
-        <testsuite name="composer_name">
+        <testsuite name="Careers Manager">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
