@@ -2,7 +2,7 @@
 /**
  * @var array                                                                                $params
  * @var array                                                                                $items
- * @var array                                                                                     $formContent
+ * @var array                                                                                $formContent
  * @var mixed                                                                                $result
  * @var string                                                                               $pagination
  * @var \Concrete\Core\View\View                                                             $view

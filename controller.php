@@ -173,6 +173,7 @@ class Controller extends PackageController
         $this->addSinglePage('/dashboard/careers_manager', $pkg, t('Careers Manager'));
         $this->addSinglePage('/dashboard/careers_manager/jobs', $pkg, t('Jobs'));
         $this->addSinglePage('/dashboard/careers_manager/locations', $pkg, t('Locations'));
+        $this->addSinglePage('/dashboard/careers_manager/departments', $pkg, t('Departments'));
         $this->addSinglePage('/dashboard/careers_manager/settings', $pkg, t('Settings'));
     }
 }

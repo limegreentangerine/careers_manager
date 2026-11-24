@@ -1,7 +1,10 @@
-<?php defined('C5_EXECUTE') or die('Access Denied.'); ?>
+<?php defined('C5_EXECUTE') or die('Access Denied.');
+/**
+ * @var \CareersManager\Search\Result\Job\Jobs $result
+ */
+?>
 
 <div class="ccm-dashboard-content-full">
-
     <?php
         /** @var bool $hasLocations */
         if (empty($items)) {

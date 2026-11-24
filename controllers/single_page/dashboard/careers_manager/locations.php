@@ -144,7 +144,7 @@ class Locations extends DashboardPageController
             'id' => $id,
             'name' => $name,
             'handle' => $handle,
-            'isPrimary' => $isPrimary
+            'isPrimary' => $isPrimary,
         ]);
 
         if (!$this->error->has()) {

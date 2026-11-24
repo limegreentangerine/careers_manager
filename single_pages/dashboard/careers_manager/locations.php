@@ -16,7 +16,7 @@ if (in_array($controller->getAction(), ['details', 'add', 'save'])) {
         'form' => $form,
         'token' => $token,
         'entity' => $entity ?? null,
-        'formContent' => $formContent
+        'formContent' => $formContent,
     ], 'careers_manager');
 } else {
     $view->element('dashboard/locations/list', [

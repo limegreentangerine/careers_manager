@@ -1,7 +1,10 @@
-<?php defined('C5_EXECUTE') or die('Access Denied.'); ?>
+<?php defined('C5_EXECUTE') or die('Access Denied.');
+/**
+ * @var \CareersManager\Search\Result\Location\Locations $result
+ */
+?>
 
 <div class="ccm-dashboard-content-full">
-
     <?php if (empty($items)) { ?>
         <div class="alert alert-warning">
             <?php echo t('No items found.') ?>
