@@ -2,19 +2,19 @@
 
 namespace Concrete\Package\CareersManager\Controller\SinglePage\Dashboard\CareersManager;
 
-use CareersManager\Entity\Department;
+use Page;
+use DateTime;
 use CareersManager\Entity\Job;
-use CareersManager\Entity\Location;
 use CareersManager\Enum\Apply;
-use CareersManager\Search\ItemList\Department\Departments as DepartmentList;
-use CareersManager\Search\ItemList\Location\Locations as LocationList;
+use CareersManager\Entity\Location;
+use CareersManager\Entity\Department;
 use Concrete\Core\Filesystem\Element;
 use Concrete\Core\Filesystem\ElementManager;
 use Concrete\Core\Http\ResponseFactoryInterface;
 use Concrete\Core\Page\Controller\DashboardPageController;
+use CareersManager\Search\ItemList\Location\Locations as LocationList;
+use CareersManager\Search\ItemList\Department\Departments as DepartmentList;
 use Concrete\Package\CareersManager\Controller\Search\Job\Jobs as SearchController;
-use DateTime;
-use Page;
 
 class Jobs extends DashboardPageController
 {
