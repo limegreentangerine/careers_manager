@@ -89,7 +89,7 @@
             <div class="form-group">
                 <?php echo $form->label('address', t('Address')); ?>
                 <div class="input-group">
-                    <?php echo $form->textarea('address', (($entity) ? $entity->getAddress() : (($formContent) ? $formContent['location'] : false)), [ 'rows' => 5 ]); ?>
+                    <?php echo $form->textarea('address', (($formContent) ? $formContent['address'] : (($entity) ? $entity->getAddress() : false)), [ 'rows' => 5 ]); ?>
                     <span class="input-group-text"><i class="fas fa-asterisk"></i></span>
                 </div>
             </div>
@@ -98,14 +98,14 @@
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
                         <?php echo $form->label('latitude', t('Latitude')); ?>
-                        <?php echo $form->text('latitude', false, [ 'readonly' => 'readonly' ]); ?>
+                        <?php echo $form->text('latitude', (($formContent) ? $formContent['latitude'] : (($entity) ? $entity->getLatitude() : false)), [ 'readonly' => 'readonly' ]); ?>
                     </div>
                 </div>
 
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
                         <?php echo $form->label('longitude', t('Longitude')); ?>
-                        <?php echo $form->text('longitude', false, [ 'readonly' => 'readonly' ]); ?>
+                        <?php echo $form->text('longitude', (($formContent) ? $formContent['longitude'] : (($entity) ? $entity->getLongitude() : false)), [ 'readonly' => 'readonly' ]); ?>
                     </div>
                 </div>
             </div>

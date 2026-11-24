@@ -3,9 +3,11 @@
 namespace Concrete\Package\CareersManager\Controller\SinglePage\Dashboard\CareersManager;
 
 use Page;
+use MapboxKit\Api\Mapbox;
 use CareersManager\Entity\Location;
 use Concrete\Core\Filesystem\Element;
 use Concrete\Core\Filesystem\ElementManager;
+use Concrete\Core\Error\UserMessageException;
 use Concrete\Core\Http\ResponseFactoryInterface;
 use Concrete\Core\Page\Controller\DashboardPageController;
 use Concrete\Package\CareersManager\Controller\Search\Location\Locations as SearchController;
@@ -31,7 +33,7 @@ class Locations extends DashboardPageController
         return $this->headerSearch;
     }
 
-    protected function validate(string $name, string $handle, bool $isPrimary, ?int $id = null)
+    protected function validate(string $name, string $handle, string $address, bool $isPrimary, ?int $id = null)
     {
         $vstrings = app()->make('helper/validation/strings');
 
@@ -41,6 +43,10 @@ class Locations extends DashboardPageController
 
         if (!$vstrings->notempty($handle)) {
             $this->error->add(t('Handle required'));
+        }
+
+        if (!$vstrings->notempty($address)) {
+            $this->error->add(t('Address required'));
         }
 
         $h = Location::getByColumnAndValue('handle', $handle);
@@ -63,6 +69,23 @@ class Locations extends DashboardPageController
     {
         $html = app()->make('helper/html');
         $this->addHeaderItem($html->css('form.css', 'careers_manager'));
+    }
+
+    protected function calculateLocation(Location &$entity, string $address)
+    {
+        $mapbox = new Mapbox();
+        $res = $mapbox->getLocationDetails($address);
+        $response = json_decode($res->getContent());
+
+        if ((property_exists($response, 'success') && property_exists($response, 'error')) && $response->success === false) {
+            $error = json_decode($response->error);
+            throw new UserMessageException($error->message, $response->code);
+        }
+
+        if (property_exists($response, 'center')) {
+            $entity->setLongitude($response->center[0]);
+            $entity->setLatitude($response->center[1]);
+        }
     }
 
     public function on_start()
@@ -148,14 +171,16 @@ class Locations extends DashboardPageController
         $id = $this->request->get('id');
         $name = $this->request->get('name');
         $handle = $this->request->get('handle');
+        $address = $this->request->get('address');
         $isPrimary = ($this->request->get('isPrimary') !== null) ? true : false;
 
-        $this->validate($name, $handle, $isPrimary, $id);
+        $this->validate($name, $handle, $address, $isPrimary, $id);
 
         $this->set('formContent', [
             'id' => $id,
             'name' => $name,
             'handle' => $handle,
+            'address' => $address,
             'isPrimary' => $isPrimary,
         ]);
 
@@ -167,7 +192,10 @@ class Locations extends DashboardPageController
 
             $entity->setName($name);
             $entity->setHandle($handle);
+            $entity->setAddress($address);
             $entity->setIsPrimary($isPrimary);
+
+            $this->calculateLocation($entity, $address);
 
             $this->entityManager->persist($entity);
             $this->entityManager->flush();
