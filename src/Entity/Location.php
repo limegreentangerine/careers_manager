@@ -131,6 +131,7 @@ class Location extends BaseEntity
     {
         if (!$this->jobs->contains($job)) {
             $this->jobs->add($job);
+            $job->setLocation($this);
         }
 
         return $this;
@@ -147,6 +148,7 @@ class Location extends BaseEntity
     {
         if ($this->jobs->contains($job)) {
             $this->jobs->removeElement($job);
+            $job->setLocation(null);
         }
 
         return $this;

@@ -43,9 +43,10 @@ class Job extends UpdatedEntity
     protected ?string $description = null;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity="\CareersManager\Entity\Department", inversedBy="jobs")
+     * @ORM\JoinColumn(name="departmentId", referencedColumnName="id")
      */
-    protected ?string $department = null;
+    protected ?Department $department = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="\CareersManager\Entity\Location", inversedBy="jobs")
@@ -122,16 +123,6 @@ class Job extends UpdatedEntity
     public function setDescription(?string $description = null)
     {
         $this->description = $description;
-    }
-
-    public function getDepartment()
-    {
-        return $this->department;
-    }
-
-    public function setDepartment(?string $department = null)
-    {
-        $this->department = $department;
     }
 
     /**
@@ -276,10 +267,25 @@ class Job extends UpdatedEntity
      *
      * @return self
      */
-    public function setLocation(Location $location)
+    public function setLocation(?Location $location = null)
     {
         $this->location = $location;
 
         return $this;
+    }
+
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    public function getDepartmentName(): string
+    {
+        return $this->department ? $this->department->getName() : '---';
+    }
+
+    public function setDepartment(?Department $department = null)
+    {
+        $this->department = $department;
     }
 }

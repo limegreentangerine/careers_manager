@@ -31,9 +31,9 @@ class Jobs extends Set
         ));
 
         $this->addColumn(new Column(
-            'j.department',
+            '',
             t('Department'),
-            'getDepartment',
+            'getDepartmentName',
             false,
         ));
 

@@ -73,6 +73,7 @@ class Department extends BaseEntity
     {
         if (!$this->jobs->contains($job)) {
             $this->jobs->add($job);
+            $job->setDepartment($this);
         }
 
         return $this;
@@ -89,6 +90,7 @@ class Department extends BaseEntity
     {
         if ($this->jobs->contains($job)) {
             $this->jobs->removeElement($job);
+            $job->setDepartment(null);
         }
 
         return $this;
