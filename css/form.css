@@ -6,3 +6,10 @@
 	opacity: 1;
 	cursor: not-allowed;
 }
+
+#ccm-dashboard-content .map {
+	display: block;
+	width: 100%;
+	aspect-ratio: 3 / 2;
+	background-color: #e9ecef;
+}

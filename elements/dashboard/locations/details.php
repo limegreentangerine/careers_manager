@@ -97,15 +97,15 @@
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <?php echo $form->label('latitude', t('Latitude')); ?>
-                        <?php echo $form->text('latitude', (($formContent) ? $formContent['latitude'] : (($entity) ? $entity->getLatitude() : false)), [ 'readonly' => 'readonly' ]); ?>
+                        <?php echo $form->label('longitude', t('Longitude')); ?>
+                        <?php echo $form->text('longitude', (($formContent) ? $formContent['longitude'] : (($entity) ? $entity->getLongitude() : false)), [ 'readonly' => 'readonly' ]); ?>
                     </div>
                 </div>
 
                 <div class="col-12 col-lg-6">
                     <div class="form-group">
-                        <?php echo $form->label('longitude', t('Longitude')); ?>
-                        <?php echo $form->text('longitude', (($formContent) ? $formContent['longitude'] : (($entity) ? $entity->getLongitude() : false)), [ 'readonly' => 'readonly' ]); ?>
+                        <?php echo $form->label('latitude', t('Latitude')); ?>
+                        <?php echo $form->text('latitude', (($formContent) ? $formContent['latitude'] : (($entity) ? $entity->getLatitude() : false)), [ 'readonly' => 'readonly' ]); ?>
                     </div>
                 </div>
             </div>
