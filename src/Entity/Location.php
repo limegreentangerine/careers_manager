@@ -32,6 +32,21 @@ class Location extends BaseEntity
     protected bool $isPrimary = false;
 
     /**
+     * @ORM\Column(type="text", unique=false, nullable=false)
+     */
+    protected string $address;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=8, nullable=false)
+     */
+    protected string $latitude;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=8, nullable=false)
+     */
+    protected string $longitude;
+
+    /**
      * @var Collection<int, Job>
      * @ORM\OneToMany(targetEntity="\CareersManager\Entity\Job", mappedBy="location")
      */
@@ -150,6 +165,66 @@ class Location extends BaseEntity
             $this->jobs->removeElement($job);
             $job->setLocation(null);
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of address
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set the value of address
+     *
+     * @return self
+     */
+    public function setAddress(string $address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of latitude
+     */
+    public function getLatitude(): string
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Set the value of latitude
+     *
+     * @return self
+     */
+    public function setLatitude(string $latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of longitude
+     */
+    public function getLongitude(): string
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * Set the value of longitude
+     *
+     * @return self
+     */
+    public function setLongitude(string $longitude)
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }

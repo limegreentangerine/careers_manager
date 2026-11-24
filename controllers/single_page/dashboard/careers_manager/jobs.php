@@ -236,8 +236,6 @@ class Jobs extends DashboardPageController
             $entity->setSlug($slug);
             $entity->setSummary($summary);
             $entity->setDescription($description);
-            // $entity->setDepartment($department);
-            // $entity->setLocation($location);
             $entity->setClosingDate($closingDate);
             $entity->setApplyMethod($applicationMethod);
             $entity->setApplyEmail($applyEmail);

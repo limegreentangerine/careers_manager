@@ -83,6 +83,18 @@
             </div>
         </fieldset>
 
+        <fieldset>
+            <legend><?php echo t('Address & Location'); ?></legend>
+
+            <div class="form-group">
+                <?php echo $form->label('address', t('Address')); ?>
+                <div class="input-group">
+                    <?php echo $form->textarea('address', (($entity) ? $entity->getAddress() : (($formContent) ? $formContent['location'] : false)), [ 'rows' => 5 ]); ?>
+                    <span class="input-group-text"><i class="fas fa-asterisk"></i></span>
+                </div>
+            </div>
+        </fieldset>
+
         <div class="ccm-dashboard-form-actions-wrapper">
             <div class="ccm-dashboard-form-actions">
                 <a href="<?php echo $view->action(''); ?>" class="btn btn-secondary float-start"><?php echo t('Cancel'); ?></a>
