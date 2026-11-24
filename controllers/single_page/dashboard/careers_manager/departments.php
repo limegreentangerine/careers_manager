@@ -103,44 +103,38 @@ class Departments extends DashboardPageController
 
     public function save()
     {
-        // if (!$this->request->isPost()) {
-        //     $this->error->add(t('Invalid request method'));
-        // }
+        if (!$this->request->isPost()) {
+            $this->error->add(t('Invalid request method'));
+        }
 
-        // if (!$this->token->validate('submit')) {
-        //     $this->error->add($this->token->getErrorMessage());
-        // }
+        if (!$this->token->validate('submit')) {
+            $this->error->add($this->token->getErrorMessage());
+        }
 
-        // $id = $this->request->get('id');
-        // $name = $this->request->get('name');
-        // $handle = $this->request->get('handle');
-        // $isPrimary = ($this->request->get('isPrimary') !== null) ? true : false;
+        $id = $this->request->get('id');
+        $name = $this->request->get('name');
 
-        // $this->validate($name, $handle, $isPrimary, $id);
+        $this->validate($name, $id);
 
-        // $this->set('formContent', [
-        //     'id' => $id,
-        //     'name' => $name,
-        //     'handle' => $handle,
-        //     'isPrimary' => $isPrimary,
-        // ]);
+        $this->set('formContent', [
+            'id' => $id,
+            'name' => $name,
+        ]);
 
-        // if (!$this->error->has()) {
-        //     $entity = ($id) ? Location::getByID($id) : new Location();
-        //     if (!$entity) {
-        //         $entity = new Location();
-        //     }
+        if (!$this->error->has()) {
+            $entity = ($id) ? Department::getByID($id) : new Department();
+            if (!$entity) {
+                $entity = new Department();
+            }
 
-        //     $entity->setName($name);
-        //     $entity->setHandle($handle);
-        //     $entity->setIsPrimary($isPrimary);
+            $entity->setName($name);
 
-        //     $this->entityManager->persist($entity);
-        //     $this->entityManager->flush();
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
 
-        //     $this->flash('success', t('Location saved'));
-        //     return $this->buildRedirect('/dashboard/careers_manager/locations');
-        // }
+            $this->flash('success', t('Department saved'));
+            return $this->buildRedirect('/dashboard/careers_manager/departments');
+        }
     }
 
     public function delete(?int $id = null)

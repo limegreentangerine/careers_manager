@@ -17,6 +17,7 @@ class Departments extends ItemList implements ApplicationAwareInterface
 
     protected $autoSortColumns = [
         'd.id',
+        'd.name',
     ];
 
     protected function createPaginationObject()

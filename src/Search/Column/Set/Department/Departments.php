@@ -16,6 +16,14 @@ class Departments extends Set
             true,
         ));
 
+        $this->addColumn(new Column(
+            'd.name',
+            t('Name'),
+            'getName',
+            true,
+        ));
+
+
         $defaultSortColumn = $this->getColumnByKey('d.id');
         $this->setDefaultSortColumn($defaultSortColumn, 'asc');
     }
