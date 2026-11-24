@@ -7,12 +7,14 @@ use Route;
 use Concrete\Core\Entity\Package;
 use ClassKit\Package\Traits\PageTrait;
 use ClassKit\Package\PackageController;
+use ClassKit\Package\Traits\BlockTrait;
 use Concrete\Core\Package\PackageService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class Controller extends PackageController
 {
     use PageTrait;
+    use BlockTrait;
 
     /**
      * The packages handle.
@@ -28,7 +30,7 @@ class Controller extends PackageController
      *
      * @var string
      */
-    protected $pkgVersion = '0.0.0-beta.3';
+    protected $pkgVersion = '0.0.0-beta.4';
 
     /**
      * The minimum Concrete version compatible with the package.
@@ -174,5 +176,8 @@ class Controller extends PackageController
         $this->addSinglePage('/dashboard/careers_manager/jobs', $pkg, t('Jobs'));
         $this->addSinglePage('/dashboard/careers_manager/locations', $pkg, t('Locations'));
         $this->addSinglePage('/dashboard/careers_manager/departments', $pkg, t('Departments'));
+
+        // Install or update blocks
+        $this->autoInstallBlocks($pkg);
     }
 }
