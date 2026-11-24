@@ -87,18 +87,18 @@ class Departments extends DashboardPageController
 
     public function details(?int $id = null)
     {
-        // if (!$id) {
-        //     $this->flash('success', t('Location with ID (%s) not found', $id));
-        //     return $this->buildRedirect('/dashboard/careers_manager/locations/add');
-        // }
+        if (!$id) {
+            $this->flash('success', t('Department with ID (%s) not found', $id));
+            return $this->buildRedirect('/dashboard/careers_manager/departments/add');
+        }
 
-        // $entity = Location::getByID($id);
-        // if (!$entity) {
-        //     $this->flash('success', t('Location with ID (%s) not found', $id));
-        //     return $this->buildRedirect('/dashboard/careers_manager/locations/add');
-        // }
+        $entity = Department::getByID($id);
+        if (!$entity) {
+            $this->flash('success', t('Department with ID (%s) not found', $id));
+            return $this->buildRedirect('/dashboard/careers_manager/departments/add');
+        }
 
-        // $this->set('entity', $entity);
+        $this->set('entity', $entity);
     }
 
     public function save()
