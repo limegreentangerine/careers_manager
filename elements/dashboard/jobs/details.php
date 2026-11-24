@@ -2,6 +2,7 @@
 /**
  * @var array|null                                  $formContent
  * @var array                                       $locations
+ * @var array                                       $departments
  * @var array                                       $application_types
  * @var \Concrete\Core\View\View                    $view
  * @var \Concrete\Core\Form\Service\Form            $form
@@ -92,7 +93,26 @@
 
             <div class="form-group">
                 <?php echo $form->label('department', t('Department')); ?>
-                <?php echo $form->text('department', (($formContent) ? $formContent['department'] : (($entity) ? $entity->getDepartment() : false))); ?>
+                <div class="input-group">
+                    <select id="department" name="department" class="form-select">
+                        <option value=""><?php echo t('Choose a department...'); ?></option>
+                        <?php foreach ($departments as $department) {
+                            if (is_array($formContent) && array_key_exists('department', $formContent)) {
+                                $selected = (string) $formContent['department'] === (string) $department->getID();
+                            } else {
+                                $selected = $entity && $entity->getDepartment()
+                                    && (string) $entity->getDepartment()->getID() === (string) $department->getID();
+                            }
+                            ?>
+                            <option value="<?php echo $department->getID(); ?>" <?php echo $selected ? 'selected' : ''; ?>>
+                                <?php echo $department->getName(); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                    <span class="input-group-text"><i class="fas fa-asterisk"></i></span>
+                </div>
+
+                <div class="help-block"><?php echo t('Departments are managed in Careers Manager > <a href="/dashboard/careers_manager/departments" target="_blank">Departments</a>.'); ?></div>
             </div>
 
             <div class="form-group">

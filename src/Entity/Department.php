@@ -23,7 +23,7 @@ class Department extends BaseEntity
 
     /**
      * @var Collection<int, Job>
-     * @ORM\OneToMany(targetEntity="\CareersManager\Entity\Job", mappedBy="location")
+     * @ORM\OneToMany(targetEntity="\CareersManager\Entity\Job", mappedBy="department")
      */
     protected Collection $jobs;
 

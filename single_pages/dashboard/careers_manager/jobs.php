@@ -21,6 +21,7 @@ if (in_array($controller->getAction(), ['details', 'add', 'save'])) {
         'formContent' => $formContent,
         'application_types' => $controller->getApplicationTypes(),
         'locations' => $controller->getLocations(),
+        'departments' => $controller->getDepartments(),
     ], 'careers_manager');
 } else {
     $view->element('dashboard/jobs/list', [

@@ -2,17 +2,19 @@
 
 namespace Concrete\Package\CareersManager\Controller\SinglePage\Dashboard\CareersManager;
 
-use Page;
-use DateTime;
+use CareersManager\Entity\Department;
 use CareersManager\Entity\Job;
-use CareersManager\Enum\Apply;
 use CareersManager\Entity\Location;
+use CareersManager\Enum\Apply;
+use CareersManager\Search\ItemList\Department\Departments as DepartmentList;
+use CareersManager\Search\ItemList\Location\Locations as LocationList;
 use Concrete\Core\Filesystem\Element;
 use Concrete\Core\Filesystem\ElementManager;
 use Concrete\Core\Http\ResponseFactoryInterface;
 use Concrete\Core\Page\Controller\DashboardPageController;
-use CareersManager\Search\ItemList\Location\Locations as LocationList;
 use Concrete\Package\CareersManager\Controller\Search\Job\Jobs as SearchController;
+use DateTime;
+use Page;
 
 class Jobs extends DashboardPageController
 {
@@ -40,6 +42,7 @@ class Jobs extends DashboardPageController
         ?int $id,
         string $title,
         string $slug,
+        ?Department $department,
         ?Location $location,
         string $closingDateString,
         bool $isActive,
@@ -60,6 +63,10 @@ class Jobs extends DashboardPageController
         $h = Job::getByColumnAndValue('slug', $slug);
         if ($id === null && $h) {
             $this->error->add(t('Job with slug (%s) exists', $slug));
+        }
+
+        if (!$department || !$department instanceof Department) {
+            $this->error->add(t('Department is required'));
         }
 
         if (!$location || !$location instanceof Location) {
@@ -182,7 +189,7 @@ class Jobs extends DashboardPageController
         $slug = $this->request->get('slug');
         $summary = ($this->request->get('summary') !== '') ? $this->request->get('summary') : null;
         $description = ($this->request->get('description') !== '') ? $this->request->get('description') : null;
-        $department = ($this->request->get('department') !== '') ? $this->request->get('department') : null;
+        $department = Department::getByID($this->request->get('department'));
         $location = Location::getByID($this->request->get('location'));
         $closingDateString = $this->request->get('closingDate');
         $isActive = $this->request->get('isActive') ? true : false;
@@ -195,6 +202,7 @@ class Jobs extends DashboardPageController
             $id,
             $title,
             $slug,
+            $department,
             $location,
             $closingDateString,
             $isActive,
@@ -209,7 +217,7 @@ class Jobs extends DashboardPageController
             'slug' => $slug,
             'summary' => $summary,
             'description' => $description,
-            'department' => $department,
+            'department' => $department->getID() ?? 0,
             'location' => $location->getID() ?? 0,
             'closingDateString' => $closingDateString,
             'isActive' => $isActive,
@@ -228,12 +236,15 @@ class Jobs extends DashboardPageController
             $entity->setSlug($slug);
             $entity->setSummary($summary);
             $entity->setDescription($description);
-            $entity->setDepartment($department);
-            $entity->setLocation($location);
+            // $entity->setDepartment($department);
+            // $entity->setLocation($location);
             $entity->setClosingDate($closingDate);
             $entity->setApplyMethod($applicationMethod);
             $entity->setApplyEmail($applyEmail);
             $entity->setApplyUrl($applyUrl);
+
+            $location->addJob($entity);
+            $department->addJob($entity);
 
             $this->entityManager->persist($entity);
             $this->entityManager->flush();
@@ -250,6 +261,14 @@ class Jobs extends DashboardPageController
         $ll->sortBy('isPrimary', 'asc');
 
         return $ll->getResults();
+    }
+
+    public function getDepartments()
+    {
+        $dl = new DepartmentList();
+        $dl->sortBy('name', 'asc');
+
+        return $dl->getResults();
     }
 
     public function getApplicationTypes()
