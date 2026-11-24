@@ -1,0 +1,8 @@
+#ccm-dashboard-content .form-control:disabled,
+#ccm-dashboard-content .form-control[readonly],
+#ccm-dashboard-content .form-select:disabled {
+	background-color: #e9ecef;
+	color: #6c757d;
+	opacity: 1;
+	cursor: not-allowed;
+}

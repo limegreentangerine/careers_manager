@@ -100,10 +100,22 @@ class Jobs extends DashboardPageController
         $this->addFooterItem($html->javascript('job-form.js', 'careers_manager'));
     }
 
+    protected function includeFormCSS()
+    {
+        $html = app()->make('helper/html');
+        $this->addHeaderItem($html->css('form.css', 'careers_manager'));
+    }
+
     public function hasLocations(): bool
     {
         $ll = new LocationList();
         return (count($ll->getResults()) > 0) ? true : false;
+    }
+
+    public function on_start()
+    {
+        parent::on_start();
+        $this->includeFormCSS();
     }
 
     public function view()

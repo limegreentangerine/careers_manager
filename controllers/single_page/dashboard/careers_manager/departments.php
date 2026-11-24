@@ -40,6 +40,18 @@ class Departments extends DashboardPageController
         }
     }
 
+    protected function includeFormCSS()
+    {
+        $html = app()->make('helper/html');
+        $this->addHeaderItem($html->css('form.css', 'careers_manager'));
+    }
+
+    public function on_start()
+    {
+        parent::on_start();
+        $this->includeFormCSS();
+    }
+
     public function view()
     {
         $reset = false;

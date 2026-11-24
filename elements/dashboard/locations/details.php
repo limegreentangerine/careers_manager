@@ -93,6 +93,22 @@
                     <span class="input-group-text"><i class="fas fa-asterisk"></i></span>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="form-group">
+                        <?php echo $form->label('latitude', t('Latitude')); ?>
+                        <?php echo $form->text('latitude', false, [ 'readonly' => 'readonly' ]); ?>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <div class="form-group">
+                        <?php echo $form->label('longitude', t('Longitude')); ?>
+                        <?php echo $form->text('longitude', false, [ 'readonly' => 'readonly' ]); ?>
+                    </div>
+                </div>
+            </div>
         </fieldset>
 
         <div class="ccm-dashboard-form-actions-wrapper">
