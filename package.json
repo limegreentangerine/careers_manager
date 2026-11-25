@@ -7,9 +7,7 @@
     },
     "scripts": {
         "build": "vite build",
-        "dev": "vite",
-        "lint": "eslint src --fix",
-        "check": "svelte-check --tsconfig ./tsconfig.json"
+        "watch": "vite build --watch"
     },
     "repository": {
         "type": "git",

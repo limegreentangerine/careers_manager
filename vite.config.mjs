@@ -14,21 +14,30 @@ entries.forEach(file => {
   input[blockPath] = file;
 });
 
+// Generate name from block path (e.g., 'blocks/job_list' -> 'JobList')
+const getEntryName = (entryPath) => {
+  const name = path.basename(entryPath).replace(/([-_])([a-z])/g, (_, sep, char) => char.toUpperCase());
+  return name.charAt(0).toUpperCase() + name.slice(1);
+};
+
 export default defineConfig({
   plugins: [svelte()],
   build: {
     lib: {
       entry: input,
-      formats: ['es']
+      name: 'BlockModule',
+      formats: ['iife']
     },
     outDir: '.',
     target: 'es2019',
     minify: false,
     rollupOptions: {
       output: {
-        format: 'es',
-        entryFileNames: '[name]/view.js'
+        format: 'iife',
+        entryFileNames: '[name]/view.js',
+        extend: true
       }
     }
   }
 });
+
