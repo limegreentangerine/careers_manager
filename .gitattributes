@@ -10,3 +10,7 @@
 /phpunit.xml.dist export-ignore
 /phpstan-bootstrap.php export-ignore
 /phpstan.neon export-ignore
+/svelte.config.js export-ignore
+/svelte.d.ts export-ignore
+/tsconfig.json export-ignore
+/vite.config.mjs export-ignore

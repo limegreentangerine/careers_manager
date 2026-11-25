@@ -1,27 +1,40 @@
 {
-	"name": "careers_manager",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"directories": {
-		"test": "tests"
-	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/limegreentangerine/careers_manager.git"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"type": "commonjs",
-	"bugs": {
-		"url": "https://github.com/limegreentangerine/careers_manager/issues"
-	},
-	"homepage": "https://github.com/limegreentangerine/careers_manager#readme",
-	"devDependencies": {
-		"prettier": "^3.9.6"
-	}
+    "name": "careers_manager",
+    "version": "1.0.0",
+    "description": "",
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite",
+        "lint": "eslint src --fix",
+        "check": "svelte-check --tsconfig ./tsconfig.json"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/limegreentangerine/careers_manager.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/limegreentangerine/careers_manager/issues"
+    },
+    "homepage": "https://github.com/limegreentangerine/careers_manager#readme",
+    "devDependencies": {
+        "@sveltejs/vite-plugin-svelte": "^7.3.2",
+        "eslint-plugin-svelte": "^3.24.1",
+        "glob": "^14.0.6",
+        "globals": "^17.14.0",
+        "prettier": "^3.10.1",
+        "prettier-plugin-svelte": "^4.2.0",
+        "svelte": "^5.59.1",
+        "svelte-check": "^4.7.8",
+        "svelte-preprocess": "^6.0.5",
+        "typescript": "^6.0.3",
+        "typescript-eslint": "^8.74.0",
+        "vite": "^8.3.8"
+    }
 }
