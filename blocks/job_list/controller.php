@@ -1,17 +1,15 @@
 <?php
+
 namespace Concrete\Package\CareersManager\Block\JobList;
 
-use Careers\Ajax\JobList;
-use Careers\Entity\Job;
-use Careers\Service\Settings;
-use Concrete\Core\Block\BlockController;
 use Page;
-use URL;
+use CareersManager\Entity\Job;
+use Concrete\Core\Block\BlockController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use CareersManager\Search\ItemList\Job\Jobs as JobList;
+use CareersManager\Search\ItemList\Department\Departments as DepartmentList;
 
-/**
- * Front-end jobs listing + detail view.
- * The listing is loaded over AJAX from Careers\Ajax\JobList (/ajax/careers/job-list).
- */
 class Controller extends BlockController
 {
     protected $btTable = 'btJobList';
@@ -20,9 +18,29 @@ class Controller extends BlockController
     protected $btInterfaceHeight = 450;
     protected $btCacheBlockOutput = false;
 
-    public string $title;
-    public string $introText;
+    public bool $showLocationSearch;
     public int $perPage;
+    public array $radiusOptions = [10, 25, 50];
+
+    protected function getResultUrl(Page $page, Job $result): string
+    {
+        return sprintf('%sdetail/%s', $page->getCollectionLink(), $result->getSlug());
+    }
+
+    protected function getDepartmentOptions()
+    {
+        $departments = [];
+
+        $dl = new DepartmentList();
+        $dl->sortBy('name', 'asc');
+        $results = $dl->getResults();
+
+        foreach ($results as $result) {
+            $departments[$result->getID()] = $result->getName();
+        }
+
+        return $departments;
+    }
 
     public function getBlockTypeName()
     {
@@ -34,77 +52,87 @@ class Controller extends BlockController
         return t('Searchable list of current vacancies from the Careers jobs manager.');
     }
 
-    public function save($args)
-    {
-        $args['perPage'] = max(1, min(JobList::MAX_LIMIT, (int) (isset($args['perPage']) ? $args['perPage'] : JobList::DEFAULT_LIMIT)));
-        parent::save($args);
-    }
-
-    /**
-     * Listing view: renders the search form; results are fetched by view.js.
-     */
     public function view()
     {
         $this->set('mode', 'list');
 
-        $settings = $this->app->make(Settings::class);
-        $query = $this->request->query;
-
         $radiusOptions = [];
-        foreach (Settings::RADIUS_OPTIONS as $miles) {
+        foreach ($this->radiusOptions as $miles) {
             $radiusOptions[$miles] = t('Within %s miles', $miles);
         }
         $radiusOptions[0] = t('Any distance');
 
-        $page = Page::getCurrentPage();
-
-        $this->set('postcodeInput', trim((string) $query->get('postcode', '')));
-        $this->set('department', trim((string) $query->get('department', '')));
-        $this->set('radius', JobList::sanitiseRadius($query->has('radius') ? $query->get('radius') : null, $settings));
         $this->set('radiusOptions', $radiusOptions);
-        $this->set('departments', JobList::getLiveDepartments());
-        $this->set('endpoint', (string) URL::to('/ajax/careers/job-list'));
-        $this->set('cID', $page ? $page->getCollectionID() : 0);
-        $this->set('limit', (int) $this->perPage ?: JobList::DEFAULT_LIMIT);
+        $this->set('showLocationSearch', $this->showLocationSearch);
+        $this->set('departments', $this->getDepartmentOptions());
+        $this->set('perPage', $this->perPage);
     }
 
-    /**
-     * Detail view: /{careers-page}/job/{id}/{slug}.
-     */
-    public function action_job($id = null, $slug = null)
+    public function listJobs(): Response
+    {
+        $response = [
+            'request' => $_REQUEST,
+        ];
+
+        $page = Page::getByID($_REQUEST['cid']);
+
+        $jl = new JobList();
+
+        if (isset($_REQUEST['department'])) {
+            $jl->filterByDepartment($_REQUEST['department']);
+        }
+
+        $jl->filterByLive();
+        $jl->sortBy('date_created', 'desc');
+        $jl->setItemsPerPage($_REQUEST['limit']);
+
+        $pagination = $jl->getPagination();
+        $pagination->setCurrentPage($_REQUEST['page']);
+        $results = $pagination->getCurrentPageResults();
+        $response['results'] = count($results);
+        $response['page'] = $pagination->hasNextPage() ? ($_REQUEST['page'] + 1) : 0;
+
+        ob_start();
+        $view = new \View();
+        if (count($results) > 0) {
+            foreach ($results as $result) {
+                $view->element('/frontend/job_list/result', [
+                    'job' => $result,
+                    'url' => $this->getResultUrl($page, $result),
+                ], 'careers_manager');
+            }
+        } else {
+            $view->element('/frontend/job_list/empty', [], 'careers_manager');
+        }
+        $response['html'] = ob_get_contents();
+        ob_end_clean();
+
+        return new JsonResponse($response, 200);
+    }
+
+    public function action_detail(?string $slug = null)
     {
         $this->set('mode', 'detail');
+        $page = Page::getCurrentPage();
 
-        $job = $id ? Job::getByID((int) $id) : false;
-
+        $job = $slug ? Job::getByColumnAndValue('slug', $slug) : false;
         if ($job && $job->isLive()) {
+            app()->make('helper/seo')->addTitleSegmentBefore($job->getTitle());
             $this->set('job', $job);
-            $this->app->make('helper/seo')->addTitleSegmentBefore($job->getTitle());
+            $this->set('page', $page);
         } else {
-            $this->set('job', null);
+            return $this->buildRedirect($page->getCollectionLink());
         }
     }
 
-    /**
-     * URL for the listing with the current search kept, plus any overrides.
-     *
-     * @return string
-     */
-    public function getListUrl(array $params = [])
+    public function save($args)
     {
-        return JobList::buildUrl((string) URL::to(Page::getCurrentPage()), array_merge($this->getSearchParams(), $params));
+        $args['showLocationSearch'] = (isset($args['showLocationSearch'])) ? 1 : 0;
+        parent::save($args);
     }
 
-    protected function getSearchParams()
+    public function getBackLink(\Concrete\Core\Page\Page $page)
     {
-        $params = [];
-        foreach (JobList::SEARCH_PARAMS as $key) {
-            $value = $this->request->query->get($key);
-            if (is_string($value) && $value !== '') {
-                $params[$key] = $value;
-            }
-        }
-
-        return $params;
+        return $page->getCollectionLink();
     }
 }

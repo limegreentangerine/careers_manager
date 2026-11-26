@@ -30,7 +30,7 @@ class Controller extends PackageController
      *
      * @var string
      */
-    protected $pkgVersion = '0.0.0-beta.4';
+    protected $pkgVersion = '0.0.0-beta.6';
 
     /**
      * The minimum Concrete version compatible with the package.
@@ -165,6 +165,8 @@ class Controller extends PackageController
 
             return new JsonResponse([]);
         });
+
+        Route::register('/ajax/careers/job/list', '\Concrete\Package\CareersManager\Block\JobList\Controller::listJobs');
     }
 
     public function registerEvents(): void {}

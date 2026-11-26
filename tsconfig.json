@@ -9,8 +9,5 @@
 		"esModuleInterop": true,
 		"skipLibCheck": true
 	},
-	"include": [
-		"/**/*.ts",
-		"svelte.d.ts"
-	]
+	"include": ["/**/*.ts", "svelte.d.ts"]
 }

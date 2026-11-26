@@ -2,6 +2,7 @@
 
 namespace CareersManager\Search\ItemList\Job;
 
+use DateTime;
 use CareersManager\Entity\Job;
 use ClassKit\Search\ItemList\ListTrait;
 use Pagerfanta\Doctrine\DBAL\QueryAdapter;
@@ -42,6 +43,26 @@ class Jobs extends ItemList implements ApplicationAwareInterface
             ->from('crsJobs', 'j')
         ;
     }
+
+    /**
+     * @param int    $department
+     * @param string $comparison
+     */
+    public function filterByDepartment(int $department, string $comparison = '=')
+    {
+        $this->filterBy('departmentId', $department, $comparison);
+    }
+
+    /**
+     * Active jobs whose closing date hasn't passed (a job is still open on its closing date).
+     */
+    public function filterByLive()
+    {
+        $now = new DateTime();
+        $this->filterBy('isActive', 1);
+        $this->filterBy('closingDate', $now->format('Y-m-d'), '>=');
+    }
+
 
     public function getTotalResults()
     {
