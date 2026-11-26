@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c4e7dfc3b522b911425774f29d3104f",
+    "content-hash": "73997bc082f67b2a0cf5402fb221c881",
     "packages": [
         {
             "name": "limegreentangerine/class_kit",
@@ -5817,51 +5817,6 @@
             },
             "abandoned": "league/uri",
             "time": "2015-07-15T08:24:12+00:00"
-        },
-        {
-            "name": "limegreentangerine/svelte-builder",
-            "version": "0.0.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/limegreentangerine/svelte-builder.git",
-                "reference": "dbc355e36df6e95ba3e24988206c82ee8b0ace9c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/limegreentangerine/svelte-builder/zipball/dbc355e36df6e95ba3e24988206c82ee8b0ace9c",
-                "reference": "dbc355e36df6e95ba3e24988206c82ee8b0ace9c",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^2.0"
-            },
-            "bin": [
-                "bin/build-svelte-component"
-            ],
-            "type": "composer-plugin",
-            "extra": {
-                "class": "Limegreentangerine\\SvelteBuilder\\Installer"
-            },
-            "autoload": {
-                "psr-4": {
-                    "Limegreentangerine\\SvelteBuilder\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Lee Jones",
-                    "email": "mail@leejones.me.uk"
-                }
-            ],
-            "support": {
-                "issues": "https://github.com/limegreentangerine/svelte-builder/issues",
-                "source": "https://github.com/limegreentangerine/svelte-builder/tree/0.0.10"
-            },
-            "time": "2026-11-25T12:49:02+00:00"
         },
         {
             "name": "lusitanian/oauth",
